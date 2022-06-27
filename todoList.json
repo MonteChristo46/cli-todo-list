@@ -1,0 +1,23 @@
+[
+  {
+    "task":  "Clean kitchen",
+    "completed":  false,
+    "creationDate": "",
+    "completionDate": "",
+    "creator": "Daniel"
+  },
+  {
+    "task":  "Continue coding",
+    "completed":  true,
+    "creationDate": "",
+    "completionDate": "",
+    "creator": "Daniel"
+  },
+  {
+    "task":  "Check emails",
+    "completed":  false,
+    "creationDate": "",
+    "completionDate": "",
+    "creator": "Norina"
+  }
+]
