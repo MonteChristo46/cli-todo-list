@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"github.com/MonteChristo46/cli-todo-list/pkg/todo"
@@ -22,7 +21,7 @@ func main() {
 	// Defining the CLI input flags
 	add := flag.String("add", "", "Adds a task to TodoList")
 	complete := flag.String("complete", "", "Sets a task complete based on his name")
-	deleteTask := flag.String("delete", "", "Deletes a task based on his name")
+	deleteTask := flag.Int("delete", -1, "Deletes a task based on his name")
 	list := flag.Bool("list", true, "Prints the TodoList in the command line")
 	creator := flag.String("creator", "Unkown", "The creator that will be listed when adding task")
 
@@ -37,7 +36,11 @@ func main() {
 
 	// Logic for flag arguments
 	if *add != "" {
-		todoList.Add(*add, *creator)
+		if *creator == "" {
+			todoList.Add(*add, "-")
+		} else {
+			todoList.Add(*add, *creator)
+		}
 		err := todoList.StoreToFile(fileName)
 		handleError(err)
 	}
@@ -48,17 +51,14 @@ func main() {
 		handleError(err)
 	}
 
-	if *deleteTask != "" {
-		todoList.Delete(*deleteTask)
-		err := todoList.StoreToFile(fileName)
+	// TODO Still bugy and should work with an index..
+	if *deleteTask > 0 {
+		err := todoList.Delete(*deleteTask)
+		handleError(err)
+		err = todoList.StoreToFile(fileName)
 		handleError(err)
 	}
 	if *list {
 		todoList.Print()
-	}
-	if *creator != "" {
-		if *add != "" {
-			handleError(errors.New("creator can only be defined with valid task"))
-		}
 	}
 }

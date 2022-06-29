@@ -57,16 +57,15 @@ func (t *TodoList) Add(taskName string, creator string) {
 	}
 }
 
-// Delete removes an element from the Task list
-func (t *TodoList) Delete(task string) {
-	var list []Item
-	for i := range t.Items {
-		item := t.Items[i]
-		if item.Task != task {
-			t.Items = append(list, item)
-		}
+// Delete removes an element from the Task list by its index
+func (t *TodoList) Delete(id int) error {
+	if (id > 0) && (id <= len(t.Items)) {
+		i := id - 1
+		t.Items = append(t.Items[:i], t.Items[i+1:]...)
+		return nil
+	} else {
+		return errors.New("id not in range")
 	}
-	t.Items = list
 }
 
 // CompleteTask set a Task to completed
@@ -120,8 +119,6 @@ func (t TodoList) Print() {
 	}
 
 	for i := range t.Items {
-
-		//
 		var completedText string
 		if t.Items[i].Completed {
 			completedText = "✅"
@@ -133,12 +130,11 @@ func (t TodoList) Print() {
 			{Text: strconv.Itoa(i + 1)},
 			{Text: t.Items[i].Task, Align: simpletable.AlignCenter},
 			{Text: completedText, Align: simpletable.AlignCenter},
-			{Text: t.Items[i].CompletionDate.Format("2006-01-02 15:04")},
 			{Text: t.Items[i].CreationDate.Format("2006-01-02 15:04")},
+			{Text: t.Items[i].CompletionDate.Format("2006-01-02 15:04")},
 			{Text: t.Items[i].Creator},
 		}
 		table.Body.Cells = append(table.Body.Cells, row)
 	}
-
 	fmt.Println(table.String())
 }
