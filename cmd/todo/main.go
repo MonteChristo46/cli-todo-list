@@ -51,7 +51,6 @@ func main() {
 		handleError(err)
 	}
 
-	// TODO Still bugy and should work with an index..
 	if *deleteTask > 0 {
 		err := todoList.Delete(*deleteTask)
 		handleError(err)
